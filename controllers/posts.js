@@ -13,7 +13,8 @@ module.exports = (app) => {
     const post = new Post(req.body);
 
     // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
-    post.save(() => res.redirect('/'));
+    post.save();
+    res.redirect('/');
   });
 
 };
