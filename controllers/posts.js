@@ -4,12 +4,13 @@ module.exports = (app) => {
 
   // INDEX
   /*
-    uses find() to search for all posts. lean() converts into objects, as mongoose returns mongoose documents.
-    then renders the posts-index template and sends in posts
+    uses find() to search for all documents in the posts collection.
+    lean() converts into JS objects, as mongoose returns mongoose documents with larger memory footprint and added functionality.
+    then renders the posts-index template and sends in posts as arguments
   */
   app.get('/', async (req, res) => {
     try {
-      let posts = await Post.find({}).lean()
+      const posts = await Post.find({}).lean()
       res.render('posts-index', { posts })
       console.log("Posts acquired successfully.")
     } catch (error) {
