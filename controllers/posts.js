@@ -4,12 +4,13 @@ module.exports = (app) => {
 
   // INDEX
   /*
-    uses find() to search for all posts. lean() converts into objects, as mongoose returns mongoose documents.
-    then renders the posts-index template and sends in posts
+    uses find() to search for all documents in the posts collection.
+    lean() converts into JS objects, as mongoose returns mongoose documents with larger memory footprint and added functionality.
+    then renders the posts-index template and sends in posts as arguments
   */
   app.get('/', async (req, res) => {
     try {
-      let posts = await Post.find({}).lean()
+      const posts = await Post.find({}).lean()
       res.render('posts-index', { posts })
       console.log("Posts acquired successfully.")
     } catch (error) {
@@ -35,9 +36,11 @@ module.exports = (app) => {
   // CREATE
   app.post('/posts/new', (req, res) => {
     // INSTANTIATE INSTANCE OF POST MODEL
+
     /*
-      grabs the body of of the post request and inputs it into new instance of Post
-      Post class expects an object, and destructures it.
+    Utilize constructor to create new instance of Post with the req.body object sent from
+    submitting the form. Post will destructure the object and grab the required fields it needs based
+    on the schema we established in post.js.
     */
     console.log(req.body.title)
     const post = new Post(req.body);
