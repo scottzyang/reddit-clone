@@ -28,6 +28,27 @@ module.exports = (app) => {
   //     })
   // })
 
+  // SHOW
+  app.get('/posts/:id', async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id).lean()
+      res.render('posts-show', { post })
+      console.log("Post show success")
+    } catch (error) {
+      console.error(error)
+      console.log("Unable to show post.")
+    }
+  })
+  // app.get('/posts/:id', (req, res) => {
+  //   Post.findById(req.params.id).lean()
+  //     .then((post) => {
+  //       res.render('posts-show', { post })
+  //     })
+  //     .catch((err) => {
+  //       console.error(err.message)
+  //     })
+  // })
+
   // NEW
   app.get('/posts/new', (req, res) => {
     res.render('posts-new', {});
