@@ -35,9 +35,11 @@ module.exports = (app) => {
   // CREATE
   app.post('/posts/new', (req, res) => {
     // INSTANTIATE INSTANCE OF POST MODEL
+
     /*
-      grabs the body of of the post request and inputs it into new instance of Post
-      Post class expects an object, and destructures it.
+    Utilize constructor to create new instance of Post with the req.body object sent from
+    submitting the form. Post will destructure the object and grab the required fields it needs based
+    on the schema we established in post.js.
     */
     console.log(req.body.title)
     const post = new Post(req.body);
