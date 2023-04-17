@@ -1,7 +1,6 @@
 /*
 Set up testing environment for our app.
 */
-
 // import assertion libraries to validate test and expected behaviors
 const chai = require('chai');
 const chaiHttp = require('chai-http'); // extension of Chai that has methods to make http requests.
