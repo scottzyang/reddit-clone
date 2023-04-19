@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const mongoose = require('mongoose')
 
 module.exports = (app) => {
 
@@ -18,36 +19,6 @@ module.exports = (app) => {
       console.log("Unable to query for posts.")
     }
   })
-
-  // native promise syntax
-  // app.get('/', (req, res) => {
-  //   Post.find({}).lean()
-  //     .then((posts) => res.render('posts-index', { posts }))
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     })
-  // })
-
-  // SHOW
-  app.get('/posts/:id', async (req, res) => {
-    try {
-      const post = await Post.findById(req.params.id).lean()
-      res.render('posts-show', { post })
-      console.log("Post show success")
-    } catch (error) {
-      console.error(error)
-      console.log("Unable to show post.")
-    }
-  })
-  // app.get('/posts/:id', (req, res) => {
-  //   Post.findById(req.params.id).lean()
-  //     .then((post) => {
-  //       res.render('posts-show', { post })
-  //     })
-  //     .catch((err) => {
-  //       console.error(err.message)
-  //     })
-  // })
 
   // NEW
   app.get('/posts/new', (req, res) => {
@@ -70,5 +41,17 @@ module.exports = (app) => {
     post.save();
     res.redirect('/');
   });
+
+    // SHOW
+    app.get('/posts/:id', async (req, res) => {
+      try {
+        const post = await Post.findById(req.params.id).lean()
+        res.render('posts-show', { post })
+        console.log("Post show success")
+      } catch (error) {
+        console.error(error)
+        console.log("Unable to show post.")
+      }
+    })
 
 };
