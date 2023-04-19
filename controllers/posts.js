@@ -42,16 +42,27 @@ module.exports = (app) => {
     res.redirect('/');
   });
 
-    // SHOW
-    app.get('/posts/:id', async (req, res) => {
-      try {
-        const post = await Post.findById(req.params.id).lean()
-        res.render('posts-show', { post })
-        console.log("Post show success")
-      } catch (error) {
-        console.error(error)
-        console.log("Unable to show post.")
-      }
-    })
+  // SHOW
+  app.get('/posts/:id', async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id).lean()
+      res.render('posts-show', { post })
+      console.log("Post show success")
+    } catch (error) {
+      console.error(error)
+      console.log("Unable to show post.")
+    }
+  })
+
+  app.get('/n/:subreddit', async (req, res) => {
+    try {
+      const posts = await Post.find({ subreddit: req.params.subreddit }).lean()
+      res.render('posts-index', { posts })
+      console.log('Subreddit show success')
+    } catch (error) {
+      console.error(error)
+      console.log("Unable to reach subreddit")
+    }
+  })
 
 };
