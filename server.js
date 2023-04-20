@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: false })); // parses urlencoded data typi
 
 // require controllers
 require('./controllers/posts')(app);
+require('./controllers/comment')(app);
 
 // link database
 require('./data/reddit-db');

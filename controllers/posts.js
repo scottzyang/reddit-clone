@@ -1,5 +1,4 @@
 const Post = require('../models/post');
-const mongoose = require('mongoose')
 
 module.exports = (app) => {
 
@@ -26,26 +25,29 @@ module.exports = (app) => {
   });
 
   // CREATE
-  app.post('/posts/new', (req, res) => {
+  app.post('/posts/new', async (req, res) => {
     // INSTANTIATE INSTANCE OF POST MODEL
-
     /*
     Utilize constructor to create new instance of Post with the req.body object sent from
     submitting the form. Post will destructure the object and grab the required fields it needs based
     on the schema we established in post.js.
     */
-    console.log(req.body.title)
-    const post = new Post(req.body);
-
-    // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
-    post.save();
-    res.redirect('/');
+    try {
+      // Instantiate instance of Comment Model
+      console.log(req.body.title)
+      const post = await new Post(req.body);
+      // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
+      post.save();
+      res.redirect('/');
+    } catch (error) {
+      console.error(error)
+    }
   });
 
   // SHOW
   app.get('/posts/:id', async (req, res) => {
     try {
-      const post = await Post.findById(req.params.id).lean()
+      const post = await Post.findById(req.params.id).lean().populate('comments');
       res.render('posts-show', { post })
       console.log("Post show success")
     } catch (error) {
