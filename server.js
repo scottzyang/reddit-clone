@@ -1,6 +1,7 @@
 // require libraries
 const express = require('express');
 const { engine } = require('express-handlebars');
+const handlebars = require('handlebars')
 
 // set up instance of express app
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 app.engine('handlebars', engine()); // register view engine for rendering HTML pages
 app.set('view engine', 'handlebars'); // set view engine for application
 app.set('views', './views'); // set path for location of views
+handlebars.partialsDir = './views/partials' // register the directory where partials are stored
 app.use(express.json()); // middleware to parse JSON. Client requests with JSON are parsed and available in req.body automatically.
 app.use(express.urlencoded({ extended: false })); // parses urlencoded data typically submit via HTML forms. Makes available in req.body. Extended false uses simple querystring library to parse urlencoded payload.
 
