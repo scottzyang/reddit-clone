@@ -9,9 +9,11 @@ module.exports = (app) => {
     then renders the posts-index template and sends in posts as arguments
   */
   app.get('/', async (req, res) => {
+    const currentUser = req.user;
+
     try {
       const posts = await Post.find({}).lean()
-      res.render('posts-index', { posts })
+      res.render('posts-index', { posts, currentUser })
       console.log("Posts acquired successfully.")
     } catch (error) {
       console.log(error)
@@ -21,7 +23,12 @@ module.exports = (app) => {
 
   // NEW
   app.get('/posts/new', (req, res) => {
-    res.render('posts-new', {});
+    const currentUser = req.user;
+    if (currentUser) {
+      res.render('posts-new', { currentUser });
+    } else {
+      return res.redirect('/login'); // redirect to login page
+    }
   });
 
   // CREATE
@@ -32,9 +39,9 @@ module.exports = (app) => {
     submitting the form. Post will destructure the object and grab the required fields it needs based
     on the schema we established in post.js.
     */
+   if (req.user) {
     try {
-      // Instantiate instance of Comment Model
-      console.log(req.body.title)
+      // Instantiate instance of Post Model
       const post = await new Post(req.body);
       // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
       post.save();
@@ -42,13 +49,18 @@ module.exports = (app) => {
     } catch (error) {
       console.error(error)
     }
+   } else {
+    return res.redirect('/login'); // redirect to login page
+   }
+
   });
 
   // SHOW
   app.get('/posts/:id', async (req, res) => {
+    const currentUser = req.user;
     try {
       const post = await Post.findById(req.params.id).lean().populate('comments');
-      res.render('posts-show', { post })
+      res.render('posts-show', { post, currentUser })
       console.log("Post show success")
     } catch (error) {
       console.error(error)
@@ -57,9 +69,10 @@ module.exports = (app) => {
   })
 
   app.get('/n/:subreddit', async (req, res) => {
+    const currentUser = req.user;
     try {
       const posts = await Post.find({ subreddit: req.params.subreddit }).lean()
-      res.render('posts-index', { posts })
+      res.render('posts-index', { posts, currentUser })
       console.log('Subreddit show success')
     } catch (error) {
       console.error(error)
