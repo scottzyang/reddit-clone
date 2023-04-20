@@ -12,7 +12,7 @@ module.exports = (app) => {
     const currentUser = req.user;
 
     try {
-      const posts = await Post.find({}).lean()
+      const posts = await Post.find({}).lean().populate('author');
       res.render('posts-index', { posts, currentUser })
       console.log("Posts acquired successfully.")
     } catch (error) {
@@ -42,10 +42,12 @@ module.exports = (app) => {
    if (req.user) {
     try {
       // Instantiate instance of Post Model
+      const userID = req.user._id;
       const post = await new Post(req.body);
+      post.author = userID;
       // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
       post.save();
-      res.redirect('/');
+      res.redirect(`/posts/${post._id}`);
     } catch (error) {
       console.error(error)
     }
@@ -59,7 +61,8 @@ module.exports = (app) => {
   app.get('/posts/:id', async (req, res) => {
     const currentUser = req.user;
     try {
-      const post = await Post.findById(req.params.id).lean().populate('comments');
+      // populate grabs document from associated field
+      const post = await Post.findById(req.params.id).lean().populate('comments').populate('author');
       res.render('posts-show', { post, currentUser })
       console.log("Post show success")
     } catch (error) {
@@ -71,7 +74,7 @@ module.exports = (app) => {
   app.get('/n/:subreddit', async (req, res) => {
     const currentUser = req.user;
     try {
-      const posts = await Post.find({ subreddit: req.params.subreddit }).lean()
+      const posts = await Post.find({ subreddit: req.params.subreddit }).lean().populate('author')
       res.render('posts-index', { posts, currentUser })
       console.log('Subreddit show success')
     } catch (error) {

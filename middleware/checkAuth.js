@@ -10,7 +10,6 @@ const checkAuth = (req, res, next) => {
     const decodedToken = jwt.decode(token, { complete: true }) || {}; // decode passed in token, complete: true also decodes header info. Returns decoded object containing the info.
     req.user = decodedToken.payload; // this sets req.user to the decoded token payload
   }
-
   next();
 };
 
