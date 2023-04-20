@@ -21,4 +21,10 @@ module.exports = (app) => {
       console.error(error)
     }
   });
+
+  // Log out
+  app.get('/logout', async (req, res) => {
+    res.clearCookie('nToken');
+    return res.redirect('/');
+  })
 }
