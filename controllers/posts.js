@@ -61,7 +61,7 @@ module.exports = (app) => {
   app.get('/posts/:id', async (req, res) => {
     const currentUser = req.user;
     try {
-      // populate grabs document from associated field
+      // populate grabs document from associated field, path: determines what field to populate, and the populate option determines what nested field to pop.
       const post = await Post.findById(req.params.id).lean().populate({ path: 'comments', populate: { path: 'author' } }).populate('author');
       res.render('posts-show', { post, currentUser })
       console.log("Post show success")
