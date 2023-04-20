@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 // create new schema with appropriate fields
 const commentSchema = new Schema({
   content: { type: String, required: true },
+  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
 // based off the new schema, return a constructor that creates new documents.
