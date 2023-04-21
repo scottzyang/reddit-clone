@@ -40,10 +40,13 @@ module.exports = (app) => {
     on the schema we established in post.js.
     */
    if (req.user) {
-    try {
+    try {// initialize new attributes
       // Instantiate instance of Post Model
       const userID = req.user._id;
       const post = await new Post(req.body);
+      post.upVotes = [];
+      post.downVotes = [];
+      post.voteScore = 0;
       post.author = userID;
       // SAVE INSTANCE OF POST MODEL TO DB AND REDIRECT TO THE ROOT
       post.save();
@@ -82,5 +85,30 @@ module.exports = (app) => {
       console.log("Unable to reach subreddit")
     }
   })
+
+  // PUt
+  app.put('/posts/:id/vote-up', (req, res) => {
+    Post.findById(req.params.id).then(post => {
+      post.upVotes.push(req.user._id);
+      post.voteScore += 1;
+      post.save();
+
+      return res.status(200);
+    }).catch(err => {
+      console.log(err);
+    })
+  });
+
+  app.put('/posts/:id/vote-down', (req, res) => {
+    Post.findById(req.params.id).then(post => {
+      post.downVotes.push(req.user._id);
+      post.voteScore -= 1;
+      post.save();
+
+      return res.status(200);
+    }).catch(err => {
+      console.log(err);
+    });
+  });
 
 };
