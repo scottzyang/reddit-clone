@@ -10,8 +10,7 @@
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
     {{#each post.comments}}
-    <p>{{this.content}}</p>
-    <p class="text-end"><small>{{this.author.username}}</small></p>
+    {{> comment comment=this postId=../post._id}}
     {{/each}}
   </form>
 </div>

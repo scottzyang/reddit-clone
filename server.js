@@ -24,6 +24,7 @@ app.use(checkAuth);
 require('./controllers/posts')(app);
 require('./controllers/comment')(app);
 require('./controllers/auth')(app);
+require('./controllers/replies.js')(app);
 
 // link database
 require('./data/reddit-db');
