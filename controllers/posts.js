@@ -62,7 +62,7 @@ module.exports = (app) => {
     const currentUser = req.user;
     try {
       // populate grabs document from associated field, path: determines what field to populate, and the populate option determines what nested field to pop.
-      const post = await Post.findById(req.params.id).lean().populate({ path: 'comments', populate: { path: 'author' } }).populate('author');
+      const post = await Post.findById(req.params.id).populate('comments').lean()
       res.render('posts-show', { post, currentUser })
       console.log("Post show success")
     } catch (error) {
@@ -74,7 +74,7 @@ module.exports = (app) => {
   app.get('/n/:subreddit', async (req, res) => {
     const currentUser = req.user;
     try {
-      const posts = await Post.find({ subreddit: req.params.subreddit }).lean().populate('author')
+      const posts = await Post.find({ subreddit: req.params.subreddit }).lean()
       res.render('posts-index', { posts, currentUser })
       console.log('Subreddit show success')
     } catch (error) {
