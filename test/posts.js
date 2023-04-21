@@ -15,7 +15,7 @@ const should = chai.should();
 
 describe('Posts', () => {
   const newUser = {
-    username: "testone",
+    username: "testing",
     password: "password"
   }
 
