@@ -2,7 +2,8 @@
 const mongoose = require('mongoose');
 assert = require('assert');
 
-const url = 'mongodb://localhost/reddit-db';
+const url = process.env.DATABASE_URL;
+
 /*
 Cannot pass callback functions into .connect method as of v7.
 Error handling is done via .then & .catch syntax.
